@@ -1,0 +1,24 @@
+classes      6 Run Reload TakeCover Seek Fire Stand
+attributes   5
+weapon       2 none gun
+cover        3 none near covered
+spotted      2 no yes
+ammo         3 no reload yes
+clearShot    2 no yes
+examples
+Run       gun  none    yes no     yes
+Run       none none    yes no     no
+Stand     none none    no  no     no
+Stand     gun  covered yes no     yes
+Stand     none covered yes no     yes
+Reload    gun  covered yes reload no
+Reload    gun  none    no  reload yes
+Reload    gun  covered yes reload no
+Reload    gun  none    yes reload yes
+TakeCover gun  near    yes reload yes
+TakeCover none near    yes no     no
+Fire      gun  none    yes yes    yes
+Fire      gun  near    yes yes    yes
+Fire      gun  none    no  yes    yes
+Seek      gun  covered yes yes    no
+Seek      gun  none    no  yes    no

@@ -1,0 +1,5 @@
+Niave Bayesian Classifier
+
+This is a simple learning mechanism based on Bayesian statistics.
+
+Like a decision tree, it is capable of concept learning and classification.

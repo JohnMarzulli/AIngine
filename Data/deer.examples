@@ -1,0 +1,30 @@
+outcomes     4 kStateGrazing kStateFlee kStateRoam kStateSleep
+dimensions   8
+nearPreditor 2 No Yes
+biggestNeed  5 kNoNeeds kNeedShelter kNeedFood kNeedWater kNeedSleep
+nearFood     2 No Yes
+needFood     2 No Yes
+nearWater    2 No Yes
+needWater    2 No Yes
+nearShelter  2 No Yes
+needShelter  2 No Yes
+examples
+kStateGrazing  No  kNeedFood    Yes Yes Yes Yes No  No
+kStateGrazing  No  kNeedFood    Yes Yes No  No  No  No
+kStateGrazing  No  kNeedWater   No  No  Yes Yes No  No
+kStateGrazing  No  kNeedWater   Yes Yes Yes Yes No  No
+kStateSleep    No  kNeedSleep   No  No  No  No  Yes Yes
+kStateSleep    No  kNeedSleep   Yes Yes Yes Yes Yes Yes
+kStateSleep    No  kNeedShelter Yes Yes Yes Yes Yes Yes
+kStateRoam     No  kNeedSleep   Yes Yes Yes Yes No  Yes
+kStateRoam     No  kNoNeeds     No  No  No  No  No  No
+kStateRoam     No  kNoNeeds     Yes No  Yes No  Yes No
+kStateRoam     No  kNeedFood    No  Yes Yes Yes Yes Yes
+kStateRoam     No  kNeedWater   Yes Yes No  Yes Yes Yes
+kStateRoam     No  kNeedShelter Yes Yes Yes Yes No  Yes
+kStateFlee     Yes kNeedFood    Yes Yes Yes Yes Yes Yes
+kStateFlee     Yes kNeedFood    No  No  No  No  No  No
+kStateFlee     Yes kNeedWater   Yes Yes Yes Yes Yes Yes
+kStateFlee     Yes kNeedWater   No  No  No  No  No  No
+kStateFlee     Yes kNeedSleep   Yes Yes Yes Yes Yes Yes
+kStateFlee     Yes kNeedSleep   No  No  No  No  No  No

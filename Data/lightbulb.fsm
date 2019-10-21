@@ -1,0 +1,6 @@
+FSM CLightbulb NEW
+2 STATE_Off STATE_On
+2 EVENT_SwitchOn EVENT_SwitchOff
+STATE_Off EVENT_SwitchOn  STATE_On
+STATE_On  EVENT_SwitchOff STATE_Off
+

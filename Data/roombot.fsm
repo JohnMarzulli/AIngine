@@ -1,0 +1,16 @@
+FSM Roombot NEW
+5 STATE_Initializing STATE_Spiraling STATE_Turning STATE_Stopped STATE_Off
+8 EVENT_SwitchOn  EVENT_SwitchOff EVENT_Reset EVENT_Initialized EVENT_Blocked EVENT_Turn EVENT_Clear EVENT_Finished
+STATE_Off           EVENT_SwitchOn    STATE_Initializing
+STATE_Initializing  EVENT_Initialized STATE_Spiraling
+STATE_Initializing  EVENT_SwitchOff   STATE_Off
+STATE_Spiraling     EVENT_Blocked     STATE_Turning
+STATE_Spiraling     EVENT_Finished    STATE_Off
+STATE_Spiraling     EVENT_Reset       STATE_Initializing
+STATE_Spiraling     EVENT_SwitchOff   STATE_Off
+STATE_Spiraling     EVENT_Turn        STATE_Turning
+STATE_Turning       EVENT_Clear       STATE_Spiraling
+STATE_Turning       EVENT_Reset       STATE_Initializing
+STATE_Stopped       EVENT_Reset       STATE_Initializing
+STATE_Stopped       EVENT_SwitchOff   STATE_Off
+

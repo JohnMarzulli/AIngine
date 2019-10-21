@@ -1,0 +1,19 @@
+Rule    : stack(x, y)
+Precond : clear(y) & holding(x)
+Delete  : clear(y) & holding(x)
+Add     : arm(empty) & on(x, y) & clear(x)
+
+Rule    : unstack(X, Y)
+Precond : on(X, Y) & clear(X) & arm(empty)
+Delete  : on(X, Y) & clear(X) & arm(empty)
+Add     : holding(X) & clear(Y)
+
+Rule    : pickup(X)
+Precond : ontable(X) & clear(X) & arm(empty)
+Delete  : ontable(X) & clear(X) & arm(empty)
+Add     : holding(X)
+
+Rule    : putdown(X)
+Precond : holding(X)
+Delete  : holding(X)
+Add     : ontable(X) & arm(empty) & clear(X)

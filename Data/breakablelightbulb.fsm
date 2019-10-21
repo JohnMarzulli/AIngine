@@ -1,0 +1,6 @@
+FSM CBreakableLightbulb EXTENDS CLightbulb
+1 STATE_Broken
+1 EVENT_Break
+STATE_Off EVENT_Break     STATE_Broken
+STATE_On  EVENT_Break     STATE_Broken
+

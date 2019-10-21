@@ -1,0 +1,34 @@
+Rule    : Open(x)
+Precond : closed(x)
+Delete  : closed(x)
+Add     : opened(x)
+
+Rule    : Close(x)
+Precond : opened(x)
+Delete  : opened(x)
+Add     : closed(x)
+
+Rule    : Fire(x, y)
+Precond : have(x) & weapon(x) & loaded(x) & near(y)
+Delete  : loaded(x) & alive(y)
+Add     : unloaded(x) & dead(y)
+
+Rule    : Load(x)
+Precond : have(x) & unloaded(x) & weapon(x)
+Delete  : unloaded(x)
+Add     : loaded(x)
+
+Rule    : Pickup(x)
+Precond : free(x) & near(x)
+Delete  : free(x) & near(x)
+Add     : have(x)
+
+Rule    : Drop(x)
+Precond : have(x)
+Delete  : have(x)
+Add     : free(x)
+
+Rule    : Find(x)
+Precond : Far(x)
+Delete  : Far(x)
+Add     : near(x)

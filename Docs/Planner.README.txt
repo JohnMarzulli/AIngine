@@ -1,0 +1,5 @@
+Planning Engine
+
+This is a simple planner based loosely on the STRIPS grammar, with support only for conjunctions of predicates. First order logic is used for resolution of facts, and a depth first search is used to generate actions.
+
+World rules are kept in separate files and can be loaded on demand. Goals and states are given to the planner via strings or arrays of predicates. Once the planner finds a solution, the plan can be executed seperately from the planner object

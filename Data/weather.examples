@@ -1,0 +1,20 @@
+classes     2 yes no
+attributes  4
+outlook     3 sunny overcast rain
+temperature 3 cool mild hot
+humidity    2 normal high
+wind        2 weak strong
+examples
+no  sunny    hot  high   weak
+no  sunny    hot  high   strong
+yes overcast hot  high   weak
+yes rain     mild high   weak
+yes rain     cool normal weak
+yes overcast cool normal strong
+no  sunny    mild high   weak
+yes sunny    cool normal weak
+yes rain     mild normal weak
+yes sunny    mild normal strong
+yes overcast mild high   strong
+yes overcast hot  normal weak
+no  rain     mild high   strong

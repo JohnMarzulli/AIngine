@@ -1,0 +1,45 @@
+6
+Run
+Reload
+TakeCover
+Seek
+Fire
+Stand
+5
+weapon 2
+ none gun
+cover 3
+ none near covered
+spotted 2
+ no yes
+ammo 3
+ no reload yes
+clearShot 2
+ no yes
+SPLIT ammo
+ no
+SPLIT cover
+ none
+SPLIT spotted
+ no
+OUTCOME Stand
+ yes
+OUTCOME Run
+ near
+OUTCOME TakeCover
+ covered
+OUTCOME Stand
+ reload
+SPLIT cover
+ none
+OUTCOME Reload
+ near
+OUTCOME TakeCover
+ covered
+OUTCOME Reload
+ yes
+SPLIT clearShot
+ no
+OUTCOME Seek
+ yes
+OUTCOME Fire

@@ -1,0 +1,8 @@
+*.h
+*.cpp
+*.dll
+*.pdb
+*/bin/*
+*/obj/*
+Tools/DecisionTreeTool/bin
+Tools/DecisionTreeTool/obj

@@ -1,0 +1,17 @@
+outcomes     3 kStateGrowing kStateWilted kStateDead
+dimensions   3
+currentState 3 kStateGrowing kStateWilted kStateDead
+needFood     2 No Yes
+needWater    2 No Yes
+examples
+kStateGrowing kStateGrowing No  No
+kStateGrowing kStateWilted  No  No
+kStateWilted  kStateGrowing Yes Yes
+kStateWilted  kStateGrowing No  Yes
+kStateWilted  kStateGrowing Yes No
+kStateWilted  kStateWilted  Yes No
+kStateWilted  kStateWilted  No  Yes
+kStateDead    kStateWilted  Yes Yes
+kStateDead    kStateDead    No  No
+kStateDead    kStateDead    Yes Yes
+

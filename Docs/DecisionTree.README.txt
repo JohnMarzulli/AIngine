@@ -1,0 +1,6 @@
+Decision Tree
+
+This is a simple learning mechanism based on the ID3 algorithm.
+
+It is capable of concept learning and classification.
+This code only produces and visually ouputs a tree and does not implement any ID3 extensions such as classification of continious values.
