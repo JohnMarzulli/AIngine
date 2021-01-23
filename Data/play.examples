@@ -1,0 +1,17 @@
+classes     2 yes no
+attributes  4
+weather     3 sunny cloudy rainy
+temperature 3 cool mild hot
+humidity    2 normal high
+wind        2 weak strong
+examples
+No  Sunny  Hot  High   Weak
+Yes Cloudy Hot  High   Weak
+Yes Sunny  Mild Normal Strong
+Yes Cloudy Mild High   Strong
+No  Rainy  Mild High   Strong
+No  Rainy  Cool Normal Strong
+Yes Rainy  Mild High   Weak
+No  Sunny  Hot  High   Strong
+Yes Cloudy Hot  Normal Weak
+No  Rainy  Mild High   Strong

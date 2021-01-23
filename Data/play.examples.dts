@@ -1,0 +1,29 @@
+2
+yes
+no
+4
+weather 3
+ sunny cloudy rainy
+temperature 3
+ cool mild hot
+humidity 2
+ normal high
+wind 2
+ weak strong
+SPLIT weather
+ sunny
+SPLIT temperature
+ cool
+OUTCOME no
+ mild
+OUTCOME yes
+ hot
+OUTCOME no
+ cloudy
+OUTCOME yes
+ rainy
+SPLIT wind
+ weak
+OUTCOME yes
+ strong
+OUTCOME no

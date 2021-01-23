@@ -9,8 +9,8 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Tools/DecisionTreeTool/bin/Debug/netcoreapp3.0/DecisionTreeTool",
-            "args": ["/home/jmarzulli/git/AIngine/Data/weather.examples"],
+            "program": "${workspaceFolder}/Tools/DecisionTreeTool/bin/Debug/net5.0/DecisionTreeTool",
+            "args": ["${workspaceFolder}/Data/weather.examples"],
             "cwd": "${workspaceFolder}/Tools/DecisionTreeTool/bin/Debug/netcoreapp3.0/",
             "stopAtEntry": false,
             "console": "internalConsole"
@@ -20,7 +20,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Tools/DecisionTreeTool/bin/Debug/netcoreapp3.0/DecisionTreeTool.dll",
+            "program": "${workspaceFolder}/Tools/DecisionTreeTool/bin/Debug/net5.0/DecisionTreeTool.dll",
             "args": [
                 "/home/jmarzulli/git/AIngine/Data/weather.examples"
             ],
