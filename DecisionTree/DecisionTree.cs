@@ -125,12 +125,12 @@ namespace AiEngine.DecisionTree
             int numAttributes = int.Parse(input.ReadLine());
             for (var i = 0; i < numAttributes; ++i)
             {
-                string[] tokens = input.ReadLine().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                string[] tokens = input.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 string attributeName = tokens[0];
                 int numValues = int.Parse(tokens[1]);
 
                 List<string> attributeValues =
-                    input.ReadLine().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    input.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 Debug.Assert(
                     numValues == attributeValues.Count,
                     $"Expected {numValues}, got {attributeValues.Count}");

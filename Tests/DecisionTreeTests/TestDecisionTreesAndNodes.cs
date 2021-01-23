@@ -101,7 +101,7 @@ no  rain     mild high   strong";
         public void TestNodeEntropyScore()
         {
             (DecisionTree _, DecisionNode rootNode) = SetupTest();
-            
+
 
             float foundEntropy = rootNode.Entropy;
             const float minExpectedEntropy = 0.88f;
@@ -156,10 +156,10 @@ no  rain     mild high   strong";
             Debug.Assert(tree != null);
             Debug.Assert(tokens != null);
             Debug.Assert(tokens.Length == tree.Attributes.Count);
-            
+
             var outQuery = new ClassificationData();
 
-            for(var index=0; index < tokens.Length; ++index)
+            for (var index = 0; index < tokens.Length; ++index)
             {
                 string valueName = tokens[index].Trim();
                 (LearningAttribute attribute, AttributeValueId foundValueId) = FindAttributeAndValue(tree, valueName);
@@ -292,9 +292,9 @@ no  rain     mild high   strong";
         [TestMethod]
         public void TestExampleCreation()
         {
-            var testClass = new Classification(new[]{"Yes", "No", "Maybe"});
+            var testClass = new Classification(new[] { "Yes", "No", "Maybe" });
             ClassificationValueId expectedClassId = testClass.ValueIds.First();
-            var testAttribute = new LearningAttribute("Test", new[]{"Manual", "Automated"});
+            var testAttribute = new LearningAttribute("Test", new[] { "Manual", "Automated" });
             AttributeValueId expectedValue = testAttribute.ValueIds.First();
             var example = new Example(expectedClassId);
             example.SetValueIdentifier(testAttribute.Id, expectedValue);

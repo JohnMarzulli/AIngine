@@ -81,7 +81,7 @@ namespace AiEngine.LearningBase
 
             outString.Append($"Result: {ClassIdentifier.Id}");
 
-            foreach((AttributeId attributeId, AttributeValueId valueId) in ValueIdentifiers)
+            foreach ((AttributeId attributeId, AttributeValueId valueId) in ValueIdentifiers)
             {
                 outString.Append($" ( {attributeId.Id}={valueId.Id} )");
             }

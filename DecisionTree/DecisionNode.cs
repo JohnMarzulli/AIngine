@@ -75,7 +75,7 @@ namespace AiEngine.DecisionTree
             Children.Clear();
 
             string inputLine = inputStream?.ReadLine()?.Trim();
-            string[] tokens = inputLine?.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            string[] tokens = inputLine?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (tokens == null || tokens.Length != 2)
             {
                 return false;
@@ -107,7 +107,7 @@ namespace AiEngine.DecisionTree
                     return false;
                 }
 
-                foreach(DecisionNode _ in Children.Values)
+                foreach (DecisionNode _ in Children.Values)
                 {
                     string attributeValue = inputStream.ReadLine().Trim();
 
@@ -411,8 +411,8 @@ namespace AiEngine.DecisionTree
 
                 // The proportion is the number of times the class appears
                 // in the training data divided by the size of the training data
-                float proportion = (count / (float) numExamples);
-                entropy += (float) ((-proportion) * (Math.Log(proportion) / logTwo));
+                float proportion = (count / (float)numExamples);
+                entropy += (float)((-proportion) * (Math.Log(proportion) / logTwo));
             }
 
             return entropy;
@@ -471,8 +471,8 @@ namespace AiEngine.DecisionTree
                     continue;
                 }
 
-                float proportion = classCount / (float) valueCount;
-                entropy += (float) ((-proportion) * (Math.Log(proportion) / logTwo));
+                float proportion = classCount / (float)valueCount;
+                entropy += (float)((-proportion) * (Math.Log(proportion) / logTwo));
             }
 
             return entropy;
@@ -499,7 +499,7 @@ namespace AiEngine.DecisionTree
                 count = (curExample.GetValueIdentifier(attributeId).Equals(valueId)) ? count + 1 : count;
             }
 
-            return (float) count / (float) ExampleIds.Count;
+            return (float)count / (float)ExampleIds.Count;
         }
 
         /// <summary>

@@ -142,7 +142,7 @@ namespace AiEngine.LearningBase
         }
 
         private static string[] GetTokenizedInput(StreamReader streamReader) =>
-            streamReader.ReadLine()?.Trim().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            streamReader.ReadLine()?.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
         /// <summary>
         /// Returns the class ID of the given string.
@@ -217,7 +217,6 @@ namespace AiEngine.LearningBase
         public Example GetExample(
             in int exampleIndex
         ) => Examples[exampleIndex];
-
 
         protected ConceptLearner()
         {
