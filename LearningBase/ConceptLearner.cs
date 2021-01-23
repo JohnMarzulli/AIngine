@@ -1,361 +1,235 @@
-//////////////////////////////////////////////////////
-// File:
-//	conceptlearner.h
-//
-// Purpose:
-//	Holds the common elements that concept
-//	learning algorithms require
-//////////////////////////////////////////////////////
-
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AiEngine.LearningBase
 {
-    public abstract class CConceptLearner
+    /// <summary>
+    /// Holds the common elements that concept learning algorithms require.
+    /// </summary>
+    public abstract class ConceptLearner
     {
-        const int m_iMaxInputSize = 256;
+        /// <summary>
+        /// Returns the classification of the given data.
+        /// </summary>
+        /// <param name="inQuery">The collection of attributes to classify.</param>
+        /// <returns>The resulting classification of the query.</returns>
+        /// <remarks>
+        /// Data is given as an example object, but the
+        ///	classification calculated is not placed
+        ///	into the query object.
+        /// </remarks>
+        public abstract string Classify(ClassificationData inQuery);
 
-        public new virtual string ToString()
-        {
-            var outString = new StringBuilder();
-
-            outString.AppendLine("--------------------------------");
-
-            int iExampleCount = GetNumExamples();
-
-            for (int i = 0; i < iExampleCount; ++i)
-            {
-                outString.Append($"CLASS:{GetClass(GetExample(i).GetClassIdentifier())}");
-
-                int iAttributeCount = GetNumAttributes();
-
-                for (int j = 0; j < iAttributeCount; ++j)
-                {
-                    var attribute = GetAttribute(j);
-
-                    outString.Append($"{attribute.GetName()}{attribute.GetValue(GetExample(i).GetValueIdentifier(j))}");
-                }
-
-                outString.AppendLine();
-            }
-
-            outString.AppendLine("--------------------------------");
-
-            return outString.ToString();
-        }
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	Classify
-        //
-        // Purpose:
-        //	Returns the classification of the given data.
-        //
-        // Note:
-        //	Data is given as an example object, but the
-        //	classification calculated is not placed
-        //	into the query object.
-        //////////////////////////////////////////////////////
-        public abstract string Classify(
-            CClassificationData inQuery);
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	LoadTrainingData
-        //
-        // Purpose:
-        //	Loads the training data used to classify queries.
-        //////////////////////////////////////////////////////
+        /// <summary>
+        /// Loads the training data used to classify queries.
+        /// </summary>
+        /// <param name="streamReader">The stream that holds the training data.</param>
+        /// <returns>True if the data was loaded.</returns>
         public bool LoadTrainingData(
-            string szInFileName)
-        {
-            using (var pInputFile = new StreamReader(szInFileName))
-            {
-
-                int iNumClasses = 0;
-                int i = 0;
-                int j = 0;
-
-                string szInputString;
-
-                // Read in the classes
-                string input = pInputFile.ReadLine();
-                input = pInputFile.ReadLine();
-                iNumClasses = int.Parse(input);
-                //fscanf(pInputFile, "%d", &iNumClasses);
-
-                m_rwExamples.Clear();
-                m_rwAttributes.Clear();
-                m_rwClasses.Clear();
-
-                // Print out the names of the classes as we read them in
-                //cout << "Read " << iNumClasses << " classes";
-
-                // Read in the classifications
-                // that we can put the data into
-                for (i = 0; i < iNumClasses; ++i)
-                {
-                    szInputString = pInputFile.ReadLine();
-                    //fscanf(pInputFile, "%s", szInputString);
-
-                    m_rwClasses.Add(szInputString.Trim());
-
-                    //cout << " " << m_rwClasses[i];
-                }
-                //cout << endl;
-
-                // Read in the attributes
-                pInputFile.ReadLine();
-                //fscanf(pInputFile, "%s", szInputString);
-
-                int iNumAttributes = int.Parse(pInputFile.ReadLine());
-                //fscanf(pInputFile, "%d", &iNumAttributes);
-                //cout << "Read " << iNumAttributes << " attributes\n";
-
-                // Read in each attribute and it's values
-                for (i = 0; i < iNumAttributes; ++i)
-                {
-                    // Check to make sure we haven't hit
-                    // a bad file and EOF
-                    if (pInputFile.EndOfStream)
-                    {
-                        return false;
-                    }
-
-                    szInputString = pInputFile.ReadLine().Trim();
-                    //fscanf(pInputFile, "%s", szInputString);
-
-
-                    m_rwAttributes.Add(new CAttribute());
-                    m_rwAttributes[i].SetName(szInputString);
-
-                    int iNumValues = int.Parse(pInputFile.ReadLine());
-                    //fscanf(pInputFile, "%d", &iNumValues);
-
-                    //cout << "Attribute " << m_rwAttributes[i].GetName() << " has " << iNumValues << " values:";
-
-                    for (j = 0; j < iNumValues; ++j)
-                    {
-                        szInputString = pInputFile.ReadLine().Trim();
-                        //fscanf(pInputFile, "%s", szInputString);
-                        m_rwAttributes[i].AddValue(szInputString);
-
-                        //cout << " " << m_rwAttributes[i].GetValue(j);
-                    }
-
-                    //cout << endl;
-                }
-
-                // We should get the keyword "examples"
-                szInputString = pInputFile.ReadLine().Trim();
-                //fscanf(pInputFile, "%s", szInputString);
-
-                //cout << "EXAMPLES\n";
-
-                // Read in the examples until we hit EOF
-                // If we are running a debug build, print out
-                // the example data as we read it in
-                while (!pInputFile.EndOfStream)
-                {
-                    var newExample = new CExample();
-
-                    szInputString = pInputFile.ReadLine().Trim();
-                    //int iScanResult(fscanf(pInputFile, "%s", szInputString ) );
-
-                    if (string.IsNullOrEmpty(szInputString))
-                    {
-                        break;
-                    }
-                    //cout << szInputString;
-
-                    int iClassIdentifier = 0;
-
-                    if (!GetClassIdentifier(szInputString, ref iClassIdentifier))
-                    {
-                        Debug.Fail("Unable to find class identifier!");
-                        break;
-                    }
-
-                    newExample.SetClassIdentifier(iClassIdentifier);
-
-                    for (i = 0; i < m_rwAttributes.Count; ++i)
-                    {
-                        szInputString = pInputFile.ReadLine().Trim();
-                        //fscanf(pInputFile, "%s", szInputString);
-                        //cout << " " << szInputString;
-
-                        int iValueIdentifier = 0;
-
-                        if (m_rwAttributes[i].GetValueIdentifier(szInputString, ref iValueIdentifier))
-                        {
-                            newExample.SetValueIdentifier(i, iValueIdentifier);
-                        }
-                    }
-
-                    // cout << endl;
-
-                    // The the newly read example into the example pool.
-                    AddExample(newExample);
-
-                    //		cout << "Read new example: " << newExample << endl;
-                }
-
-                return true;
-            }
-        }
-
-        //////////////////////////////////////////////////////
-        // Mutator:
-        //	AddClass
-        //
-        // Purpose:
-        //	Adds a classification to the decision tree
-        //////////////////////////////////////////////////////
-        public void AddClass(
-            string szInNewClassification)
-        {
-            m_rwClasses.Add(szInNewClassification);
-        }
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetClassID
-        //
-        // Purpose:
-        //	Returns the class ID of the given string.
-        //////////////////////////////////////////////////////
-        public bool GetClassIdentifier(
-            string szInClassName,
-            ref int outIdentifier) => FindIdByValue(m_rwClasses, szInClassName, ref outIdentifier);
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetClass
-        //
-        // Purpose:
-        //	Returns the name of the class with the given ID
-        //////////////////////////////////////////////////////
-        public string GetClass(
-            int iInClassIdentifier) => m_rwClasses[iInClassIdentifier];
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetNumClasses
-        //
-        // Purpose:
-        //	Returns the number of classes in the decision tree.
-        //////////////////////////////////////////////////////
-        public int GetNumClasses() => m_rwClasses.Count;
-
-        //////////////////////////////////////////////////////
-        // Mutator:
-        //	AddAttribute
-        //
-        // Purpose:
-        //	Adds an attribute to the decision tree.
-        //////////////////////////////////////////////////////
-        public void AddAttribute(
-            CAttribute inNewAttribute)
-        {
-            m_rwAttributes.Add(inNewAttribute);
-        }
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetAttributeID
-        //
-        // Purpose:
-        //	Returns the ID of the attribute with the given name.
-        //////////////////////////////////////////////////////
-        public bool GetAttributeIdentifier(
-            string szInAttributeName,
-            ref int iOutIdentifier) => FindIdByValue((from attr in m_rwAttributes select attr.GetName()).ToList(), szInAttributeName, ref iOutIdentifier);
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetNumAttributes
-        //
-        // Purpose:
-        //	Returns the number of attributes used to make
-        //	a decision.
-        //////////////////////////////////////////////////////
-        public int GetNumAttributes() => m_rwAttributes.Count;
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetAttribute
-        //
-        // Purpose:
-        //	Returns a pointer to the attribute with the given ID.
-        //////////////////////////////////////////////////////
-        public CAttribute GetAttribute(
-            int iInAttributeID) => m_rwAttributes[iInAttributeID];
-
-        //////////////////////////////////////////////////////
-        // Mutator:
-        //	AddExample
-        //
-        // Purpose:
-        //	Adds an example to the pool of training data.
-        //////////////////////////////////////////////////////
-        public void AddExample(
-            CExample inNewExample)
-        {
-            m_rwExamples.Add(inNewExample);
-        }
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetExample
-        //
-        // Purpose:
-        //	Returns a copy of the example with the given ID
-        //////////////////////////////////////////////////////
-        public CExample GetExample(int iInIdentifier) => m_rwExamples[iInIdentifier];
-
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetNumExamples
-        //
-        // Purpose:
-        //	Returns the number of examples in the training data.
-        //////////////////////////////////////////////////////
-        public int GetNumExamples() => m_rwExamples.Count;
-
-        //////////////////////////////////////////////////////
-        // Constructor
-        //////////////////////////////////////////////////////
-        public CConceptLearner()
-        {
-            m_rwAttributes = new List<CAttribute>();
-            m_rwExamples = new List<CExample>();
-            m_rwClasses = new List<string>();
-        }
-
-        protected List<CAttribute> m_rwAttributes; // the attributes used to make a decision with
-        protected List<CExample> m_rwExamples;   // the examples used from training
-        protected List<string> m_rwClasses;    // The names of the classes
-
-        private bool FindIdByValue(
-            List<string> inArrayToSearch,
-            string inValueToFind,
-            ref int outIdentifier
+            StreamReader streamReader
         )
         {
-            bool outIdentifierFound = false;
+            Debug.Assert(
+                streamReader != null,
+                "Invalid stream.");
 
-            for (int i = 0; (i < inArrayToSearch.Count()) && (!outIdentifierFound); ++i)
+            Examples.Clear();
+            Attributes.Clear();
+
+            // Read in the classes
+            // Example line:
+            // classes     2 yes no
+            string[] tokens = GetTokenizedInput(streamReader);
+            int numClasses = int.Parse(tokens[1]);
+            _classes = new Classification(tokens.Skip(2).ToList());
+
+            Debug.Assert(
+                numClasses == _classes.Values.Count,
+                $"Found {_classes.Values.Count} classes, but expected {numClasses}");
+
+            // Read in the attributes
+            // Example line:
+            // attributes  4
+            int numAttributes = int.Parse(GetTokenizedInput(streamReader)[1]);
+
+            // Read in each attribute and it's values
+            for (var i = 0; i < numAttributes; ++i)
             {
-                outIdentifierFound = string.Compare(inArrayToSearch[i], inValueToFind, System.StringComparison.InvariantCultureIgnoreCase) == 0;
-                outIdentifier = outIdentifierFound ? i : outIdentifier;
+                // Example line of an attribute entry:
+                // outlook     3 sunny overcast rain
+                string[] attributeTokens = GetTokenizedInput(streamReader);
+
+                string attributeName = attributeTokens[0];
+                int attributeCount = int.Parse(attributeTokens[1]);
+                List<string> attributeValues = attributeTokens.Skip(2).ToList();
+
+                Debug.Assert(
+                    attributeCount == attributeValues.Count,
+                    $"Found {attributeValues.Count} classes, but expected {attributeCount}");
+
+                var newAttribute = new LearningAttribute(attributeName, attributeValues);
+
+                Attributes.Add(newAttribute.Id, newAttribute);
             }
 
-            // No class was found, return the proper error code.
-            return outIdentifierFound;
+            // We should get the keyword "examples"
+            // Example line:
+            // examples
+            Debug.Assert(
+                string.Compare(
+                    streamReader.ReadLine()?.Trim(),
+                    "examples", StringComparison.InvariantCultureIgnoreCase) == 0,
+                "Unable to find the expected `examples` line.");
+
+            // Read in the examples until we hit EOF
+            // If we are running a debug build, print out
+            // the example data as we read it in
+            while (!streamReader.EndOfStream)
+            {
+                // Example line:
+                // no  sunny    hot  high   weak
+                string[] exampleTokens = GetTokenizedInput(streamReader);
+
+                if (exampleTokens == null || !exampleTokens.Any())
+                {
+                    break;
+                }
+
+                ClassificationValueId classIdentifier = GetClassIdentifier(exampleTokens[0]);
+
+                Debug.Assert(
+                    classIdentifier != null,
+                    "Unable to find class identifier!");
+
+                var newExample = new Example(classIdentifier);
+                int exampleIndex = 0;
+
+                foreach (LearningAttribute attribute in Attributes.Values)
+                {
+                    AttributeValueId valueId = attribute.GetValueId(exampleTokens[exampleIndex + 1]);
+
+                    if (valueId != null)
+                    {
+                        newExample.SetValueIdentifier(attribute.Id, valueId);
+                    }
+
+                    ++exampleIndex;
+                }
+
+                // The the newly read example into the example pool.
+                AddExample(newExample);
+            }
+
+            return true;
         }
+
+        /// <summary>
+        /// Loads the training data used to classify queries.
+        /// </summary>
+        /// <param name="inFileName">The file that contains the training data.</param>
+        /// <returns>True if the data was loaded.</returns>
+        public bool LoadTrainingData(
+            string inFileName
+        )
+        {
+            var streamReader = new StreamReader(inFileName);
+
+            return LoadTrainingData(streamReader);
+        }
+
+        private static string[] GetTokenizedInput(StreamReader streamReader) =>
+            streamReader.ReadLine()?.Trim().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+
+        /// <summary>
+        /// Returns the class ID of the given string.
+        /// </summary>
+        /// <param name="outcomeName">The name of the outcome that we need the Id of.</param>
+        /// <returns>Any id found for the classification.</returns>
+        public ClassificationValueId GetClassIdentifier(
+            string outcomeName
+        ) => _classes.GetValueId(outcomeName);
+
+        /// <summary>
+        /// Returns the name of the class with the given ID
+        /// </summary>
+        /// <param name="classId">The id of the class outcome/value we want.</param>
+        /// <returns>The name of the class with the given ID</returns>
+        public string GetClass(
+            in ClassificationValueId classId
+        ) => _classes.GetValue(classId);
+
+        /// <summary>
+        /// Returns the number of classes in the decision tree.
+        /// </summary>
+        /// <returns>The number of classes in the decision tree.</returns>
+        public int GetNumClasses() =>
+            _classes.Values.Count;
+
+        /// <summary>
+        /// Returns the ID of the attribute with the given name.
+        /// </summary>
+        /// <param name="inAttributeName">The the name of attribute we need the id of.</param>
+        /// <returns>Any found id of an attribute with the given name.</returns>
+        public AttributeId GetAttributeIdentifier(
+            string inAttributeName
+        ) =>
+            Attributes.Values.FirstOrDefault(
+                value =>
+                        (string.Compare(
+                            inAttributeName,
+                            value.Name,
+                            StringComparison.InvariantCultureIgnoreCase) == 0))?.Id;
+
+        /// <summary>
+        /// Returns a reference to the attribute with the given Id.
+        /// </summary>
+        /// <param name="inAttributeId">The attribute Id we need to get the values for.</param>
+        /// <returns>Any attribute found with the given Id.</returns>
+        public LearningAttribute GetAttribute(
+            [NotNull] in AttributeId inAttributeId
+        )
+        {
+            Debug.Assert(inAttributeId != null);
+            Debug.Assert(Attributes != null);
+            Debug.Assert(Attributes.ContainsKey(inAttributeId));
+
+            return Attributes[inAttributeId];
+        }
+
+        /// <summary>
+        /// Adds an example to the pool of training data.
+        /// </summary>
+        /// <param name="inNewExample">The example to add to the training pool.</param>
+        public void AddExample(
+            Example inNewExample
+        ) =>
+            Examples.Add(inNewExample);
+
+        /// <summary>
+        /// Returns the example at the given index.
+        /// </summary>
+        /// <param name="exampleIndex">The index of the example to get.</param>
+        /// <returns>The example at the index.</returns>
+        public Example GetExample(
+            in int exampleIndex
+        ) => Examples[exampleIndex];
+
+
+        protected ConceptLearner()
+        {
+            Attributes = new Dictionary<AttributeId, LearningAttribute>();
+            Examples = new List<Example>();
+        }
+
+        public Dictionary<AttributeId, LearningAttribute> Attributes { get; } // the attributes used to make a decision with
+        public List<Example> Examples { get; } // the examples used from training
+
+        public Classification Classes => _classes;
+
+        protected Classification _classes; // The names of the classes
     }
 }

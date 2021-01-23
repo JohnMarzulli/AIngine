@@ -1,14 +1,3 @@
-//////////////////////////////////////////////////////
-// File:
-//	example.h
-//
-// Purpose:
-//	Holds the definition and constants needed to
-//	construct an example. Examples are used to
-//	train learning mechanisms that learn
-//	classification or concepts
-//////////////////////////////////////////////////////
-
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -16,86 +5,85 @@ using System.Text;
 namespace AiEngine.LearningBase
 {
     /// <summary>
-    /// 	Holds a set of values from each attribute
-    ///		so that a classification may be generated
+    /// Holds a set of values from each attribute
+    ///	so that a classification may be generated
+    /// 
+    /// Holds the definition and constants needed to
+    ///	construct an example. Examples are used to
+    ///	train learning mechanisms that learn
+    ///	classification or concepts
     /// </summary>
-    public class CClassificationData
+    [DebuggerDisplay("{ToString()}")]
+    public class ClassificationData
     {
+        public override string ToString()
+        {
+            var keyValuePairs = new List<string>();
+
+            foreach ((AttributeId key, AttributeValueId value) in ValueIdentifiers)
+            {
+                keyValuePairs.Add($"{key.Id}:{value.Id}");
+            }
+
+            return string.Join(',', keyValuePairs);
+        }
+
         /// <summary>
         /// 	Sets the ID of the value for the given attribute.
         /// </summary>
-        /// <param name="iInAttributeIndex">The index/id of the attribute to set.</param>
-        /// <param name="iInNewValueIdentifier">The value of the attribute.</param>
+        /// <param name="attributeId">The index/id of the attribute to set.</param>
+        /// <param name="valueIdentifier">The value of the attribute.</param>
         public void SetValueIdentifier(
-            int iInAttributeIndex,
-            int iInNewValueIdentifier)
+            in AttributeId attributeId,
+            in AttributeValueId valueIdentifier
+        )
         {
-            int iValueIdentifierCount = m_rwValueIdentifiers.Count;
-
-            // Create the "array" indices with a "safe" value ID
-            // if we are trying to access an ID out of range
-            if (iValueIdentifierCount <= iInAttributeIndex)
+            if (ValueIdentifiers.ContainsKey(attributeId))
             {
-                int iIndexDifference = (iValueIdentifierCount - iInAttributeIndex) + 1;
-
-                while (iIndexDifference > 0)
-                {
-                    m_rwValueIdentifiers.Add(0);
-
-                    --iIndexDifference;
-                }
+                ValueIdentifiers[attributeId] = valueIdentifier;
             }
-
-            m_rwValueIdentifiers[iInAttributeIndex] = iInNewValueIdentifier;
+            else
+            {
+                ValueIdentifiers.Add(attributeId, valueIdentifier);
+            }
         }
 
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetValueID
-        //
-        // Purpose:
-        //	Returns the ID of the value for the given attribute
-        //////////////////////////////////////////////////////
-        public int GetValueIdentifier(
-            int iInAttributeIndex)
+        /// <summary>
+        /// Returns the ID of the value for the given attribute
+        /// </summary>
+        /// <param name="id">The type of attribute we want to get the value of.</param>
+        /// <returns>The valueId for the attribute of this example</returns>
+        public AttributeValueId GetValueIdentifier(
+            AttributeId id
+        )
         {
-            Debug.Assert(iInAttributeIndex < m_rwValueIdentifiers.Count);
+            Debug.Assert(ValueIdentifiers.ContainsKey(id));
 
-            return m_rwValueIdentifiers[iInAttributeIndex];
+            return ValueIdentifiers[id];
         }
 
-        public int GetAttributeCount() => m_rwValueIdentifiers.Count;
+        public Dictionary<AttributeId, AttributeValueId> Values => ValueIdentifiers;
 
-        public CClassificationData()
-        {
-            m_rwValueIdentifiers = new List<int>();
-        }
-
-        protected List<int> m_rwValueIdentifiers; // The IDs of each value
+        protected Dictionary<AttributeId, AttributeValueId> ValueIdentifiers = new Dictionary<AttributeId, AttributeValueId>(); // The IDs of each value
     };
 
-    //////////////////////////////////////////////////////
-    // Object:
-    //	CExample
-    //
-    // Purpose:
-    //	Holds an example. An example is formed by a set
-    //	of values from each attribute and the correct
-    //	classification
-    //////////////////////////////////////////////////////
-    public class CExample : CClassificationData
+    /// <summary>
+    /// Holds an example. An example is formed by a set
+    ///	of values from each attribute and the correct
+    ///	classification
+    /// </summary>
+    [DebuggerDisplay("{ToString()}")]
+    public class Example : ClassificationData
     {
         public new virtual string ToString()
         {
             var outString = new StringBuilder();
 
-            int iAttributeCount = GetAttributeCount();
+            outString.Append($"Result: {ClassIdentifier.Id}");
 
-            outString.Append($"Result: {GetClassIdentifier()}");
-
-            for (int iAttributeIndex = 0; iAttributeIndex < iAttributeCount; ++iAttributeIndex)
+            foreach((AttributeId attributeId, AttributeValueId valueId) in ValueIdentifiers)
             {
-                outString.Append($" ( {iAttributeIndex}={GetValueIdentifier(iAttributeIndex)} )");
+                outString.Append($" ( {attributeId.Id}={valueId.Id} )");
             }
 
             outString.AppendLine();
@@ -103,33 +91,20 @@ namespace AiEngine.LearningBase
             return outString.ToString();
         }
 
-        //////////////////////////////////////////////////////
-        // Mutator:
-        //	SetClassID
-        //
-        // Purpose:
-        //	Sets the ID of the classification for this example
-        //////////////////////////////////////////////////////
-        public void SetClassIdentifier(
-            int iInNewClassIdentifier)
+        /// <summary>
+        ///     Create a new example with a known class identifier.
+        /// </summary>
+        /// <param name="inClassIdentifier"></param>
+        public Example(
+            in ClassificationValueId inClassIdentifier
+        )
         {
-            m_iClassIdentifier = iInNewClassIdentifier;
+            ClassIdentifier = inClassIdentifier;
         }
 
-        //////////////////////////////////////////////////////
-        // Function:
-        //	GetClassID
-        //
-        // Purpose:
-        //	Returns the ID of this example's class
-        //////////////////////////////////////////////////////
-        public int GetClassIdentifier() => m_iClassIdentifier;
-
-        public CExample()
-        {
-            m_iClassIdentifier = 0;
-        }
-
-        protected int m_iClassIdentifier;  // The ID of the class for this example
+        /// <summary>
+        /// The ID of the class for this example.
+        /// </summary>
+        public ClassificationValueId ClassIdentifier { get; }
     }
 }

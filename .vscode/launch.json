@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/Tools/DecisionTreeTool/bin/Debug/netcoreapp3.0/DecisionTreeTool",
-            "args": ["/home/jmarzulli/git/AIngine/Data/weather.examples"],
+            "args": ["${workspaceFolder}/Data/weather.examples"],
             "cwd": "${workspaceFolder}/Tools/DecisionTreeTool/bin/Debug/netcoreapp3.0/",
             "stopAtEntry": false,
             "console": "internalConsole"

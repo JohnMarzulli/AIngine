@@ -6,3 +6,6 @@
 */obj/*
 Tools/DecisionTreeTool/bin
 Tools/DecisionTreeTool/obj
+.vs/*
+Tests/DecisionTreeTests/bin/*
+Tests/DecisionTreeTests/obj/*

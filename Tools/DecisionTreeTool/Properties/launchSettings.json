@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DecisionTreeTool": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\git\\AIngine\\Data\\weather.examples"
+    }
+  }
+}

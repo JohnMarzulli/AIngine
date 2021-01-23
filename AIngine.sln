@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecisionTreeTests", "Tests\DecisionTreeTests\DecisionTreeTests.csproj", "{023FB9DB-ED6A-403D-8326-105442794ABB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CD18DB83-92CE-4DD2-8DCF-4F1A5C978FB1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningBase", "LearningBase\LearningBase.csproj", "{2582B5F2-78FF-49B0-9E41-D19ED54332A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecisionTree", "DecisionTree\DecisionTree.csproj", "{5477440A-CF72-4C16-8061-048573D947C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{750DF9BA-F54A-4C6C-BFBC-D457157922D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecisionTreeTool", "Tools\DecisionTreeTool\DecisionTreeTool.csproj", "{FBDFC845-03E9-4EEF-B410-9A320120C521}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{023FB9DB-ED6A-403D-8326-105442794ABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{023FB9DB-ED6A-403D-8326-105442794ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{023FB9DB-ED6A-403D-8326-105442794ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{023FB9DB-ED6A-403D-8326-105442794ABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2582B5F2-78FF-49B0-9E41-D19ED54332A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2582B5F2-78FF-49B0-9E41-D19ED54332A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2582B5F2-78FF-49B0-9E41-D19ED54332A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2582B5F2-78FF-49B0-9E41-D19ED54332A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5477440A-CF72-4C16-8061-048573D947C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5477440A-CF72-4C16-8061-048573D947C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5477440A-CF72-4C16-8061-048573D947C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5477440A-CF72-4C16-8061-048573D947C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBDFC845-03E9-4EEF-B410-9A320120C521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBDFC845-03E9-4EEF-B410-9A320120C521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBDFC845-03E9-4EEF-B410-9A320120C521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBDFC845-03E9-4EEF-B410-9A320120C521}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{023FB9DB-ED6A-403D-8326-105442794ABB} = {CD18DB83-92CE-4DD2-8DCF-4F1A5C978FB1}
+		{FBDFC845-03E9-4EEF-B410-9A320120C521} = {750DF9BA-F54A-4C6C-BFBC-D457157922D7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {096E102F-A7DA-4538-9405-3D07A2E22264}
+	EndGlobalSection
+EndGlobal
