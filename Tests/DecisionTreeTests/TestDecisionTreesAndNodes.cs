@@ -329,5 +329,83 @@ no  rain     mild high   strong";
             var expected = new Regex("\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+");
             Assert.IsTrue(expected.IsMatch(queryAsString));
         }
+
+        public enum WindStrength
+        {
+            Invalid = -1,
+            Still,
+            Breeze,
+            Gale,
+            Storm,
+            Hurricane
+        }
+
+        private static WindStrength GetWindStrengthTraditional(
+            in int windSpeedMph
+        )
+        {
+            if (windSpeedMph < 0)
+            {
+                return WindStrength.Invalid;
+            }
+
+            if (windSpeedMph < 4)
+            {
+                return WindStrength.Still;
+            }
+
+            if (windSpeedMph < 24)
+            {
+                return WindStrength.Breeze;
+            }
+
+            if (windSpeedMph < 63)
+            {
+                return WindStrength.Gale;
+            }
+
+            return WindStrength.Hurricane;
+        }
+
+        private static WindStrength GetWindStrengthPatternMatch(
+            in int windSpeedMph
+        ) =>
+            windSpeedMph switch
+            {
+                >= 0 and < 4 => WindStrength.Still,
+                >= 4 and < 24 => WindStrength.Breeze,
+                >= 24 and < 63 => WindStrength.Gale,
+                > 62 => WindStrength.Hurricane,
+                // Catches less than 0 or any gaps.
+                _ => WindStrength.Invalid
+            };
+
+        [DataTestMethod]
+        [DataRow(-100, WindStrength.Invalid)]
+        [DataRow(-1, WindStrength.Invalid)]
+        [DataRow(0, WindStrength.Still)]
+        [DataRow(3, WindStrength.Still)]
+        [DataRow(4, WindStrength.Breeze)]
+        [DataRow(20, WindStrength.Breeze)]
+        [DataRow(23, WindStrength.Breeze)]
+        [DataRow(24, WindStrength.Gale)]
+        [DataRow(40, WindStrength.Gale)]
+        [DataRow(62, WindStrength.Gale)]
+        [DataRow(63, WindStrength.Hurricane)]
+        [DataRow(100, WindStrength.Hurricane)]
+        public void TestWindStrengthClassification(
+            in int windSpeed,
+            in WindStrength expectedClassification
+        )
+        {
+            WindStrength foundTraditional = GetWindStrengthTraditional(windSpeed);
+            WindStrength foundPatternMatching = GetWindStrengthPatternMatch(windSpeed);
+
+            Assert.AreEqual(expectedClassification, foundTraditional);
+            Assert.AreEqual(expectedClassification, foundPatternMatching);
+
+            // Yes, this is duplicitous... but I wanted to make a point.
+            Assert.AreEqual(foundTraditional, foundPatternMatching);
+        }
     }
 }
