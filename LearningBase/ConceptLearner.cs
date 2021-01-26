@@ -105,7 +105,7 @@ namespace AiEngine.LearningBase
                     classIdentifier != null,
                     "Unable to find class identifier!");
 
-                var newExample = new Example(classIdentifier);
+                Example newExample = new(classIdentifier);
                 int exampleIndex = 0;
 
                 foreach (LearningAttribute attribute in Attributes.Values)
@@ -136,7 +136,7 @@ namespace AiEngine.LearningBase
             string inFileName
         )
         {
-            var streamReader = new StreamReader(inFileName);
+            StreamReader streamReader = new(inFileName);
 
             return LoadTrainingData(streamReader);
         }

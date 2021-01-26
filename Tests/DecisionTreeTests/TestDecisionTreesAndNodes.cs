@@ -292,18 +292,18 @@ no  rain     mild high   strong";
         [TestMethod]
         public void TestExampleCreation()
         {
-            var testClass = new Classification(new[] { "Yes", "No", "Maybe" });
+            Classification testClass = new(new[] { "Yes", "No", "Maybe" });
             ClassificationValueId expectedClassId = testClass.ValueIds.First();
-            var testAttribute = new LearningAttribute("Test", new[] { "Manual", "Automated" });
+            LearningAttribute testAttribute = new("Test", new[] { "Manual", "Automated" });
             AttributeValueId expectedValue = testAttribute.ValueIds.First();
-            var example = new Example(expectedClassId);
+            Example example = new(expectedClassId);
             example.SetValueIdentifier(testAttribute.Id, expectedValue);
 
             Assert.AreEqual(testClass.ValueIds.First(), example.ClassIdentifier);
             Assert.AreEqual(testAttribute.ValueIds.First(), example.GetValueIdentifier(testAttribute.Id));
 
             string exampleAsString = GetNormalizedString(example.ToString());
-            var expectedResponse = new Regex($"Result:.*{expectedClassId.Id}.*\\(.*{testAttribute.Id.Id}={expectedValue.Id}.*\\)", RegexOptions.IgnorePatternWhitespace);
+            Regex expectedResponse = new($"Result:.*{expectedClassId.Id}.*\\(.*{testAttribute.Id.Id}={expectedValue.Id}.*\\)", RegexOptions.IgnorePatternWhitespace);
             Assert.IsTrue(expectedResponse.IsMatch(exampleAsString));
         }
 
@@ -329,5 +329,26 @@ no  rain     mild high   strong";
             var expected = new Regex("\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+");
             Assert.IsTrue(expected.IsMatch(queryAsString));
         }
+
+        [TestMethod]
+        public void TestOutcomeInstantiation()
+        {
+            Classification fullyTyped = new Classification(TestOutcomeNames);
+            var varTyped = new Classification(TestOutcomeNames);
+            Classification knownTyped = new(TestOutcomeNames);
+
+            Assert.AreEqual(fullyTyped.Values.First(), knownTyped.Values.First());
+            Assert.AreEqual(varTyped.Values.First(), fullyTyped.Values.First());
+
+            // NO! Just as bad as var without an explicit type!
+            knownTyped = new(TestOutcomeNames);
+
+            Assert.AreEqual(fullyTyped.Values.First(), knownTyped.Values.First());
+
+            Assert.AreEqual(TestMemberClassification.Values.First(), knownTyped.Values.First());
+        }
+
+        private static readonly string[] TestOutcomeNames = { "Yes", "No", "Maybe" };
+        private readonly Classification TestMemberClassification = new(TestOutcomeNames);
     }
 }

@@ -327,7 +327,7 @@ namespace AiEngine.DecisionTree
         {
             DecisionTree = pInNewDecisionTree;
             RemainingAttributeIds = remainingAttributeIds;
-            Children = new Dictionary<AttributeValueId, DecisionNode>();
+            Children = new();
         }
 
         public DecisionNode()

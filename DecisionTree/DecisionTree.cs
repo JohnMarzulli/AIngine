@@ -28,7 +28,7 @@ namespace AiEngine.DecisionTree
         )
         {
             string outClassification = ClassificationUnknown;
-            var nodeToInspect = new DecisionNode(RootNode);
+            DecisionNode nodeToInspect = new(RootNode);
 
             while (nodeToInspect != null)
             {
@@ -156,7 +156,7 @@ namespace AiEngine.DecisionTree
             string inFilename
         )
         {
-            using var inputStream = new StreamReader(inFilename);
+            using StreamReader inputStream = new(inFilename);
 
             return LoadPrebuiltTree(inputStream);
         }
