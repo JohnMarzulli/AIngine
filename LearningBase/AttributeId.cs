@@ -82,13 +82,13 @@ namespace AiEngine.LearningBase
         }
     }
 
-    public class Classification : UniqueAttribute<AttributeId, ClassificationValueId>
+    public record Classification(
+        AttributeId Id,
+        Dictionary<ClassificationValueId, string> Outcomes
+    )
     {
-        public Classification(
-            IEnumerable<string> classifications
-        ) : base(nameof(Classification), classifications)
-        {
-        }
+        public List<ClassificationValueId> ValueIds => Outcomes.Keys.ToList();
+        public List<string> Values => Outcomes.Values.ToList();
     }
 
     [DebuggerDisplay("{Id}")]

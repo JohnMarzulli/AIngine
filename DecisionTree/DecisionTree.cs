@@ -36,7 +36,7 @@ namespace AiEngine.DecisionTree
 
                 if (childCount == 0)
                 {
-                    outClassification = Classes.GetValue(nodeToInspect.GetClassIdentifier());
+                    outClassification = Classes.Outcomes[nodeToInspect.GetClassIdentifier()];
 
                     break;
                 }
@@ -111,16 +111,16 @@ namespace AiEngine.DecisionTree
             Examples.Clear();
             Attributes.Clear();
 
-            var rawClassList = new List<string>();
+            Dictionary<ClassificationValueId, string> newOutcomesList = new();
 
             int numClasses = int.Parse(input.ReadLine());
             for (var i = 0; i < numClasses; ++i)
             {
                 string inputString = input.ReadLine().Trim();
-                rawClassList.Add(inputString);
+                newOutcomesList.Add(new ClassificationValueId(), inputString);
             }
 
-            _classes = new Classification(rawClassList);
+            _classes = new Classification(new AttributeId(), newOutcomesList);
 
             int numAttributes = int.Parse(input.ReadLine());
             for (var i = 0; i < numAttributes; ++i)

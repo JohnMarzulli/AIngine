@@ -45,7 +45,12 @@ namespace AiEngine.LearningBase
             // classes     2 yes no
             string[] tokens = GetTokenizedInput(streamReader);
             int numClasses = int.Parse(tokens[1]);
-            _classes = new Classification(tokens.Skip(2).ToList());
+
+            Dictionary<ClassificationValueId, string> newClasses = tokens.Skip(2).ToDictionary(
+                key => new ClassificationValueId(),
+                value => value);
+
+            _classes = new Classification(new AttributeId(), newClasses);
 
             Debug.Assert(
                 numClasses == _classes.Values.Count,
@@ -151,7 +156,18 @@ namespace AiEngine.LearningBase
         /// <returns>Any id found for the classification.</returns>
         public ClassificationValueId GetClassIdentifier(
             string outcomeName
-        ) => _classes.GetValueId(outcomeName);
+        )
+        {
+            foreach (ClassificationValueId idKey in _classes.ValueIds)
+            {
+                if (string.Equals(_classes.Outcomes[idKey], outcomeName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return idKey;
+                }
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Returns the name of the class with the given ID
@@ -160,7 +176,7 @@ namespace AiEngine.LearningBase
         /// <returns>The name of the class with the given ID</returns>
         public string GetClass(
             in ClassificationValueId classId
-        ) => _classes.GetValue(classId);
+        ) => _classes.Outcomes?[classId];
 
         /// <summary>
         /// Returns the number of classes in the decision tree.

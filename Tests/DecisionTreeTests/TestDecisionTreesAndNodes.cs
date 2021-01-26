@@ -2,6 +2,7 @@ using AiEngine.DecisionTree;
 using AiEngine.LearningBase;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -292,7 +293,12 @@ no  rain     mild high   strong";
         [TestMethod]
         public void TestExampleCreation()
         {
-            var testClass = new Classification(new[] { "Yes", "No", "Maybe" });
+            var testClass = new Classification(
+                new AttributeId(),
+                new Dictionary<ClassificationValueId, string>() {
+                    {new ClassificationValueId(), "Yes" },
+                    {new ClassificationValueId(), "No" },
+                    {new ClassificationValueId(), "Maybe" } });
             ClassificationValueId expectedClassId = testClass.ValueIds.First();
             var testAttribute = new LearningAttribute("Test", new[] { "Manual", "Automated" });
             AttributeValueId expectedValue = testAttribute.ValueIds.First();
@@ -328,6 +334,34 @@ no  rain     mild high   strong";
             // the pattern.
             var expected = new Regex("\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+");
             Assert.IsTrue(expected.IsMatch(queryAsString));
+        }
+
+        [TestMethod]
+        public void TestResultRecords()
+        {
+            DateTime now = DateTime.UtcNow;
+            DateTime later = now.AddMinutes(15);
+
+            DecisionTreeResult yes = new("Yes", now);
+            DecisionTreeResult yesAgain = new("Yes", now);
+
+            Assert.AreEqual(yes, yesAgain);
+            Assert.IsTrue(yes.IsValid);
+
+            DecisionTreeResult copyOfYes = yes;
+
+            Assert.AreEqual(yes, copyOfYes);
+
+            // NOPE - Illegal in the compiler!!!
+            //copyOfYes.TimeOfDecision = later;
+
+            DecisionTreeResult yesButLater = new(yes.Outcome, later);
+
+            Assert.AreNotEqual(yes, yesButLater);
+
+            DecisionTreeResult nope = new("Nope", now);
+
+            Assert.AreNotEqual(yes, nope);
         }
     }
 }
