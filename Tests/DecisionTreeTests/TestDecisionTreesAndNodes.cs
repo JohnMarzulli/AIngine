@@ -335,17 +335,17 @@ no  rain     mild high   strong";
         {
             Classification fullyTyped = new Classification(TestOutcomeNames);
             var varTyped = new Classification(TestOutcomeNames);
-            Classification knownTyped = new(TestOutcomeNames);
+            Classification knownType = new(TestOutcomeNames);
 
-            Assert.AreEqual(fullyTyped.Values.First(), knownTyped.Values.First());
+            Assert.AreEqual(fullyTyped.Values.First(), knownType.Values.First());
             Assert.AreEqual(varTyped.Values.First(), fullyTyped.Values.First());
 
             // NO! Just as bad as var without an explicit type!
-            knownTyped = new(TestOutcomeNames);
+            knownType = new(TestOutcomeNames);
 
-            Assert.AreEqual(fullyTyped.Values.First(), knownTyped.Values.First());
+            Assert.AreEqual(fullyTyped.Values.First(), knownType.Values.First());
 
-            Assert.AreEqual(TestMemberClassification.Values.First(), knownTyped.Values.First());
+            Assert.AreEqual(TestMemberClassification.Values.First(), knownType.Values.First());
         }
 
         private static readonly string[] TestOutcomeNames = { "Yes", "No", "Maybe" };
