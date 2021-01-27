@@ -333,8 +333,20 @@ no  rain     mild high   strong";
         [TestMethod]
         public void TestOutcomeInstantiation()
         {
+            // The "classic" way to create an object.
+            // Note that the type "Classification" is on
+            // both the left and right of the assignment.
             Classification fullyTyped = new Classification(TestOutcomeNames);
+
+            // The "var" keyword was introduced in C# 3 in 2003.
+            // This reduces typing, and is best used when
+            // the name of the type is still visible.
             var varTyped = new Classification(TestOutcomeNames);
+
+            // New for C# 9 in 2020
+            // Note that the type name of "Classification"
+            // is still used, but the constructor
+            // signature is automatically enforced by the compiler.
             Classification knownType = new(TestOutcomeNames);
 
             Assert.AreEqual(fullyTyped.Values.First(), knownType.Values.First());
