@@ -2,6 +2,7 @@ using AiEngine.DecisionTree;
 using AiEngine.LearningBase;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -328,6 +329,52 @@ no  rain     mild high   strong";
             // the pattern.
             var expected = new Regex("\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+");
             Assert.IsTrue(expected.IsMatch(queryAsString));
+        }
+
+        private static bool DoesAnyTokenContainASpace(
+            in IEnumerable<string> tokens
+        ) =>
+            tokens.Any(token => token.Contains(' '));
+
+        private static bool IsAnyTokenEmpty(
+            in IEnumerable<string> tokens
+        ) =>
+            tokens.Any(token => string.IsNullOrEmpty(token));
+
+        [TestMethod]
+        public void TestTrimEntries()
+        {
+            // Note that this is designed to produce
+            // (1) empty token
+            // (1) token with a space character
+            // (2) tokens with space characters in front
+            // (1) token with space characters at the end
+            const string splitExample = " A, B,, ,C   ,D";
+            string[] expectedTokens = { "A", "B", "C", "D" };
+
+            string[] allTokens = splitExample.Split(',');
+            string[] traditionalTokens = splitExample.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            string[] processedTraditionalTokens = traditionalTokens.Select(
+                token =>
+                    token.Trim()).Where(
+                        token =>
+                            !string.IsNullOrEmpty(token)).ToArray();
+            string[] trimmedAndRemovedTokens = splitExample.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            Assert.AreEqual(6, allTokens.Length);
+            Assert.AreEqual(5, traditionalTokens.Length);
+            Assert.AreEqual(4, processedTraditionalTokens.Length);
+            Assert.AreEqual(4, trimmedAndRemovedTokens.Length);
+
+            Assert.IsTrue(DoesAnyTokenContainASpace(allTokens));
+            Assert.IsTrue(DoesAnyTokenContainASpace(traditionalTokens));
+            Assert.IsFalse(DoesAnyTokenContainASpace(processedTraditionalTokens));
+            Assert.IsFalse(DoesAnyTokenContainASpace(trimmedAndRemovedTokens));
+
+            Assert.IsTrue(IsAnyTokenEmpty(allTokens));
+            Assert.IsFalse(IsAnyTokenEmpty(traditionalTokens));
+            Assert.IsFalse(IsAnyTokenEmpty(processedTraditionalTokens));
+            Assert.IsFalse(IsAnyTokenEmpty(trimmedAndRemovedTokens));
         }
     }
 }
