@@ -13,7 +13,8 @@ public class DecisionTreeTool
 
         private DateTime _actualTime;
 
-        public DateTime TimeOfDecision {
+        public DateTime TimeOfDecision
+        {
             get => _actualTime;
 
             init
