@@ -57,7 +57,7 @@ namespace AiEngine.LearningBase
             int numAttributes = int.Parse(GetTokenizedInput(streamReader)[1]);
 
             // Read in each attribute and it's values
-            for (var i = 0; i < numAttributes; ++i)
+            for (int i = 0; i < numAttributes; ++i)
             {
                 // Example line of an attribute entry:
                 // outlook     3 sunny overcast rain
@@ -71,7 +71,7 @@ namespace AiEngine.LearningBase
                     attributeCount == attributeValues.Count,
                     $"Found {attributeValues.Count} classes, but expected {attributeCount}");
 
-                var newAttribute = new LearningAttribute(attributeName, attributeValues);
+                LearningAttribute newAttribute = new(attributeName, attributeValues);
 
                 Attributes.Add(newAttribute.Id, newAttribute);
             }

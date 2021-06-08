@@ -66,8 +66,8 @@ no  rain     mild high   strong";
             in string valueToStream
         )
         {
-            var stream = new MemoryStream();
-            var writer = new StreamWriter(stream);
+            MemoryStream stream = new();
+            StreamWriter writer = new(stream);
             writer.Write(valueToStream);
             writer.Flush();
             stream.Position = 0;
@@ -77,13 +77,13 @@ no  rain     mild high   strong";
 
         private static (DecisionTree, DecisionNode) SetupTest()
         {
-            var newTree = new DecisionTree();
+            DecisionTree newTree = new();
 
             newTree.LoadTrainingData(GetMemoryStream(WeatherExamples));
 
-            var rootNode = new DecisionNode(newTree);
+            DecisionNode rootNode = new(newTree);
 
-            for (var exampleId = 0; exampleId < newTree.Examples.Count; ++exampleId)
+            for (int exampleId = 0; exampleId < newTree.Examples.Count; ++exampleId)
             {
                 rootNode.AddExample(exampleId);
             }
@@ -94,7 +94,7 @@ no  rain     mild high   strong";
         [TestMethod]
         public void TestEmptyConstructor()
         {
-            var _ = new DecisionNode();
+            DecisionNode _ = new();
         }
 
         [TestMethod]
@@ -157,9 +157,9 @@ no  rain     mild high   strong";
             Debug.Assert(tokens != null);
             Debug.Assert(tokens.Length == tree.Attributes.Count);
 
-            var outQuery = new ClassificationData();
+            ClassificationData outQuery = new();
 
-            for (var index = 0; index < tokens.Length; ++index)
+            for (int index = 0; index < tokens.Length; ++index)
             {
                 string valueName = tokens[index].Trim();
                 (LearningAttribute attribute, AttributeValueId foundValueId) = FindAttributeAndValue(tree, valueName);
@@ -216,7 +216,7 @@ no  rain     mild high   strong";
             string queryString
         )
         {
-            var tree = new DecisionTree();
+            DecisionTree tree = new();
             tree.LoadPrebuiltTree(GetMemoryStream(WeatherPrebuilt));
             ClassificationData query = GetQuery(tree, queryString);
 
@@ -236,10 +236,10 @@ no  rain     mild high   strong";
         [TestMethod]
         public void TestSavingPrebuiltTree()
         {
-            using var stream = new MemoryStream();
-            using var writer = new StreamWriter(stream);
+            using MemoryStream stream = new();
+            using StreamWriter writer = new(stream);
 
-            var tree = new DecisionTree();
+            DecisionTree tree = new();
             tree.LoadPrebuiltTree(GetMemoryStream(WeatherPrebuilt));
 
             tree.SavePrebuiltTree(writer);
@@ -247,7 +247,7 @@ no  rain     mild high   strong";
             writer.Flush();
             stream.Position = 0;
 
-            using var reader = new StreamReader(stream);
+            using StreamReader reader = new(stream);
             string expectedString = GetNormalizedString(WeatherPrebuilt);
             string writtenString = GetNormalizedString(reader.ReadToEnd());
 
@@ -277,7 +277,7 @@ no  rain     mild high   strong";
             string queryString
         )
         {
-            var tree = new DecisionTree();
+            DecisionTree tree = new();
             tree.LoadTrainingData(GetMemoryStream(WeatherExamples));
             tree.Train();
             ClassificationData query = GetQuery(tree, queryString);
@@ -314,7 +314,7 @@ no  rain     mild high   strong";
             in string queryString
         )
         {
-            var tree = new DecisionTree();
+            DecisionTree tree = new();
             tree.LoadPrebuiltTree(GetMemoryStream(WeatherPrebuilt));
             ClassificationData query = GetQuery(tree, queryString);
 
@@ -326,7 +326,7 @@ no  rain     mild high   strong";
             //
             // Since the ID decoding is already being tested, lets just go with
             // the pattern.
-            var expected = new Regex("\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+");
+            Regex expected = new("\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+,\\s*\\d+:\\d+");
             Assert.IsTrue(expected.IsMatch(queryAsString));
         }
 
@@ -341,7 +341,7 @@ no  rain     mild high   strong";
             // The "var" keyword was introduced in C# 3 in 2003.
             // This reduces typing, and is best used when
             // the name of the type is still visible.
-            var varTyped = new Classification(TestOutcomeNames);
+            Classification varTyped = new(TestOutcomeNames);
 
             // New for C# 9 in 2020
             // Note that the type name of "Classification"

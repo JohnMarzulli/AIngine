@@ -25,12 +25,12 @@ public class DecisionTreeTool
         string trainingDataFilename
     )
     {
-        var successCount = 0;
-        var failedCount = 0;
+        int successCount = 0;
+        int failedCount = 0;
 
         Console.WriteLine("Starting self test.");
 
-        var testTree = new DecisionTree();
+        DecisionTree testTree = new();
 
         bool outIsTestSuccessful = testTree.LoadTrainingData(trainingDataFilename);
 

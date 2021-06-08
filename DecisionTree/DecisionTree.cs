@@ -94,7 +94,7 @@ namespace AiEngine.DecisionTree
             string inFilename
         )
         {
-            using var outputStream = new StreamWriter(inFilename);
+            using StreamWriter outputStream = new(inFilename);
 
             return SavePrebuiltTree(outputStream);
         }
@@ -111,10 +111,11 @@ namespace AiEngine.DecisionTree
             Examples.Clear();
             Attributes.Clear();
 
-            var rawClassList = new List<string>();
+            List<string> rawClassList = new();
 
             int numClasses = int.Parse(input.ReadLine());
-            for (var i = 0; i < numClasses; ++i)
+
+            for (int i = 0; i < numClasses; ++i)
             {
                 string inputString = input.ReadLine().Trim();
                 rawClassList.Add(inputString);
@@ -123,7 +124,7 @@ namespace AiEngine.DecisionTree
             _classes = new Classification(rawClassList);
 
             int numAttributes = int.Parse(input.ReadLine());
-            for (var i = 0; i < numAttributes; ++i)
+            for (int i = 0; i < numAttributes; ++i)
             {
                 string[] tokens = input.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 string attributeName = tokens[0];
@@ -134,7 +135,7 @@ namespace AiEngine.DecisionTree
                 Debug.Assert(
                     numValues == attributeValues.Count,
                     $"Expected {numValues}, got {attributeValues.Count}");
-                var newAttribute = new LearningAttribute(attributeName, attributeValues);
+                LearningAttribute newAttribute = new(attributeName, attributeValues);
 
                 Attributes.Add(newAttribute.Id, newAttribute);
             }
@@ -172,7 +173,7 @@ namespace AiEngine.DecisionTree
             // examples we have
             RootNode.GetExampleIdentifierList().Clear();
 
-            for (var i = 0; i < exampleCount; ++i)
+            for (int i = 0; i < exampleCount; ++i)
             {
                 RootNode.GetExampleIdentifierList().Add(i);
             }
