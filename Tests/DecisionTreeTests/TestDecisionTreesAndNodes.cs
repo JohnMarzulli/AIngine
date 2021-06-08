@@ -363,34 +363,4 @@ no  rain     mild high   strong";
         private static readonly string[] TestOutcomeNames = { "Yes", "No", "Maybe" };
         private readonly Classification TestMemberClassification = new(TestOutcomeNames);
     }
-
-    public class UserInfo
-    {
-        private string surname;
-        public string FirstName {get; }
-        public string MiddleName {get; private set;}
-        public string LastName
-        {
-            get => surname;
-
-            init
-            {
-                surname = value?.Trim() ?? "Doe";
-            }
-        }
-
-        public void CauseCompilerErrors()
-        {
-            //FirstName = "Nope"; // Not allowed for a property W/O setter
-            MiddleName = "Allowed";
-            //LastName = "Nope"; // Not allowed due to init setter
-        }
-
-        public UserInfo(string first, string last)
-        {
-            FirstName = first;
-            MiddleName = string.Empty;
-            LastName = last;
-        }
-    }
 }
