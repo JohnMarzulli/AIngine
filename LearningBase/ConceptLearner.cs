@@ -57,7 +57,7 @@ namespace AiEngine.LearningBase
             int numAttributes = int.Parse(GetTokenizedInput(streamReader)[1]);
 
             // Read in each attribute and it's values
-            for (var i = 0; i < numAttributes; ++i)
+            for (int i = 0; i < numAttributes; ++i)
             {
                 // Example line of an attribute entry:
                 // outlook     3 sunny overcast rain
@@ -71,7 +71,7 @@ namespace AiEngine.LearningBase
                     attributeCount == attributeValues.Count,
                     $"Found {attributeValues.Count} classes, but expected {attributeCount}");
 
-                var newAttribute = new LearningAttribute(attributeName, attributeValues);
+                LearningAttribute newAttribute = new(attributeName, attributeValues);
 
                 Attributes.Add(newAttribute.Id, newAttribute);
             }
@@ -105,7 +105,7 @@ namespace AiEngine.LearningBase
                     classIdentifier != null,
                     "Unable to find class identifier!");
 
-                var newExample = new Example(classIdentifier);
+                Example newExample = new(classIdentifier);
                 int exampleIndex = 0;
 
                 foreach (LearningAttribute attribute in Attributes.Values)
@@ -136,7 +136,7 @@ namespace AiEngine.LearningBase
             string inFileName
         )
         {
-            var streamReader = new StreamReader(inFileName);
+            StreamReader streamReader = new(inFileName);
 
             return LoadTrainingData(streamReader);
         }
