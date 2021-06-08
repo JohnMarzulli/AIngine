@@ -5,38 +5,6 @@ using AiEngine.LearningBase;
 
 public class DecisionTreeTool
 {
-    public class Decision
-    {
-        public string Outcome { get; init; }
-
-        public string NoSetter { get; }
-
-        private DateTime _actualTime;
-
-        public DateTime TimeOfDecision
-        {
-            get => _actualTime;
-
-            init
-            {
-                _actualTime = value;
-
-                if (value.Year < 2016)
-                {
-                    _actualTime = value.AddYears(2016);
-                }
-            }
-        }
-
-        public Decision(
-            string outcome
-        )
-        {
-            Outcome = outcome?.Trim() ?? string.Empty;
-            NoSetter = "Here";
-        }
-    }
-
     public static int Main(string[] args)
     {
         if (!args.Any())
