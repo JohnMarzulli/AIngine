@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using AiEngine.DecisionTree;
+﻿using AiEngine.DecisionTree;
 using AiEngine.LearningBase;
+using System;
+using System.Linq;
 
 if (args.Any())
 {
@@ -14,12 +14,12 @@ bool TestComplex(
     string trainingDataFilename
 )
 {
-    var successCount = 0;
-    var failedCount = 0;
+    int successCount = 0;
+    int failedCount = 0;
 
     Console.WriteLine("Starting self test.");
 
-    var testTree = new DecisionTree();
+    DecisionTree testTree = new();
 
     bool outIsTestSuccessful = testTree.LoadTrainingData(trainingDataFilename);
 
@@ -35,9 +35,11 @@ bool TestComplex(
         foreach (Example example in testTree.Examples)
         {
             string correctAnswer = testTree.GetClass(example.ClassIdentifier);
-            string calculatedAnswer = testTree.Classify(example);
+            DecisionResult calculatedAnswer = testTree.Classify(example);
 
-            bool isExampleMathWithClassification = correctAnswer == calculatedAnswer;
+            bool isExampleMathWithClassification = calculatedAnswer != null
+                && calculatedAnswer.IsValid
+                && String.Equals(correctAnswer, calculatedAnswer.Outcome, StringComparison.InvariantCultureIgnoreCase);
             successCount += isExampleMathWithClassification ? 1 : 0;
             failedCount += isExampleMathWithClassification ? 0 : 1;
 

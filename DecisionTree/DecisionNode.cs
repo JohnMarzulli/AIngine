@@ -362,13 +362,13 @@ namespace AiEngine.DecisionTree
             }
         }
 
-        protected List<AttributeId> RemainingAttributeIds = new List<AttributeId>(); // A list of attributes to calculate for potential splits
-        protected List<int> ExampleIds = new List<int>(); // A list of examples that this subtree needs to classify
+        protected List<AttributeId> RemainingAttributeIds = new(); // A list of attributes to calculate for potential splits
+        protected List<int> ExampleIds = new(); // A list of examples that this subtree needs to classify
         protected DecisionTree DecisionTree; // Pointer to the root node of the decision tree that owns the node
 
-        public Dictionary<AttributeValueId, DecisionNode> Children { get; }
+        public Dictionary<AttributeValueId, DecisionNode> Children { get; init; }
 
-        protected Dictionary<AttributeId, float> InformationGain = new Dictionary<AttributeId, float>(); // Store the information gain for each attribute
+        protected Dictionary<AttributeId, float> InformationGain = new(); // Store the information gain for each attribute
         public AttributeId AttributeId { get; private set; } // The attribute this node splits on
         protected ClassificationValueId ClassId; // The class of this node
 
@@ -389,7 +389,7 @@ namespace AiEngine.DecisionTree
             }
 
             int numExamples = examples.Count;
-            var entropy = 0.0f;
+            float entropy = 0.0f;
             double logTwo = Math.Log(2.0f);
 
             // Find out how many examples result in the same decision class.
@@ -444,8 +444,8 @@ namespace AiEngine.DecisionTree
                 classId => classId,
                 classId => 0);
 
-            var valueCount = 0;
-            var entropy = 0.0f;
+            int valueCount = 0;
+            float entropy = 0.0f;
             double logTwo = Math.Log(2.0f);
 
             foreach (int exampleId in ExampleIds)
@@ -491,7 +491,7 @@ namespace AiEngine.DecisionTree
             in AttributeValueId valueId
         )
         {
-            var count = 0;
+            int count = 0;
 
             foreach (int exampleId in ExampleIds)
             {
@@ -514,7 +514,7 @@ namespace AiEngine.DecisionTree
             // Information gain is the entropy of the examples minus the
             // sum of the entropy of each value in the attribute times its proportion
 
-            var informationGainSum = 0.0f;
+            float informationGainSum = 0.0f;
 
             // Sum the entropy for all the values
             foreach (AttributeValueId valueId in DecisionTree.GetAttribute(attributeId).ValueIds)

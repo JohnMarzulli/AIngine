@@ -23,12 +23,12 @@ namespace AiEngine.DecisionTree
         /// <remarks>Data is given as an example object, but the classification
         /// calculated is not placed into the query object.</remarks>
         /// <returns>The resulting classification/outcome of the query.</returns>
-        public override string Classify(
+        public override DecisionResult Classify(
             ClassificationData inQuery
         )
         {
             string outClassification = ClassificationUnknown;
-            var nodeToInspect = new DecisionNode(RootNode);
+            DecisionNode nodeToInspect = new(RootNode);
 
             while (nodeToInspect != null)
             {
@@ -46,7 +46,7 @@ namespace AiEngine.DecisionTree
                 nodeToInspect = nodeToInspect.Children[valueId];
             }
 
-            return outClassification;
+            return new DecisionResult(outClassification);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace AiEngine.DecisionTree
             string inFilename
         )
         {
-            using var outputStream = new StreamWriter(inFilename);
+            using StreamWriter outputStream = new(inFilename);
 
             return SavePrebuiltTree(outputStream);
         }
@@ -111,10 +111,11 @@ namespace AiEngine.DecisionTree
             Examples.Clear();
             Attributes.Clear();
 
-            var rawClassList = new List<string>();
+            List<string> rawClassList = new();
 
             int numClasses = int.Parse(input.ReadLine());
-            for (var i = 0; i < numClasses; ++i)
+
+            for (int i = 0; i < numClasses; ++i)
             {
                 string inputString = input.ReadLine().Trim();
                 rawClassList.Add(inputString);
@@ -123,7 +124,7 @@ namespace AiEngine.DecisionTree
             _classes = new Classification(rawClassList);
 
             int numAttributes = int.Parse(input.ReadLine());
-            for (var i = 0; i < numAttributes; ++i)
+            for (int i = 0; i < numAttributes; ++i)
             {
                 string[] tokens = input.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 string attributeName = tokens[0];
@@ -134,7 +135,7 @@ namespace AiEngine.DecisionTree
                 Debug.Assert(
                     numValues == attributeValues.Count,
                     $"Expected {numValues}, got {attributeValues.Count}");
-                var newAttribute = new LearningAttribute(attributeName, attributeValues);
+                LearningAttribute newAttribute = new(attributeName, attributeValues);
 
                 Attributes.Add(newAttribute.Id, newAttribute);
             }
@@ -156,7 +157,7 @@ namespace AiEngine.DecisionTree
             string inFilename
         )
         {
-            using var inputStream = new StreamReader(inFilename);
+            using StreamReader inputStream = new(inFilename);
 
             return LoadPrebuiltTree(inputStream);
         }
@@ -172,7 +173,7 @@ namespace AiEngine.DecisionTree
             // examples we have
             RootNode.GetExampleIdentifierList().Clear();
 
-            for (var i = 0; i < exampleCount; ++i)
+            for (int i = 0; i < exampleCount; ++i)
             {
                 RootNode.GetExampleIdentifierList().Add(i);
             }

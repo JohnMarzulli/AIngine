@@ -18,7 +18,7 @@ namespace AiEngine.LearningBase
     {
         public override string ToString()
         {
-            var keyValuePairs = new List<string>();
+            List<string> keyValuePairs = new();
 
             foreach ((AttributeId key, AttributeValueId value) in ValueIdentifiers)
             {
@@ -77,9 +77,7 @@ namespace AiEngine.LearningBase
     {
         public new virtual string ToString()
         {
-            var outString = new StringBuilder();
-
-            outString.Append($"Result: {ClassIdentifier.Id}");
+            StringBuilder outString = new($"Result: {ClassIdentifier.Id}");
 
             foreach ((AttributeId attributeId, AttributeValueId valueId) in ValueIdentifiers)
             {
