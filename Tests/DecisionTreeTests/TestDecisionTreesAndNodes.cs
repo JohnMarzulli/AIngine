@@ -2,6 +2,7 @@ using AiEngine.DecisionTree;
 using AiEngine.LearningBase;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -220,10 +221,16 @@ no  rain     mild high   strong";
             tree.LoadPrebuiltTree(GetMemoryStream(WeatherPrebuilt));
             ClassificationData query = GetQuery(tree, queryString);
 
-            string found = tree.Classify(query);
+            DecisionResult found = tree.Classify(query);
+
+            Assert.IsNotNull(found);
+            Assert.IsTrue(found.IsValid);
 
             Assert.IsTrue(
-                string.Equals(expectedClassification, found, StringComparison.InvariantCultureIgnoreCase),
+                string.Equals(
+                    expectedClassification,
+                    found.Outcome,
+                    StringComparison.InvariantCultureIgnoreCase),
                 $"Expected '{queryString}' to result in '{expectedClassification}', but got '{found}'");
         }
 
@@ -282,10 +289,16 @@ no  rain     mild high   strong";
             tree.Train();
             ClassificationData query = GetQuery(tree, queryString);
 
-            string found = tree.Classify(query);
+            DecisionResult found = tree.Classify(query);
+
+            Assert.IsNotNull(found);
+            Assert.IsTrue(found.IsValid);
 
             Assert.IsTrue(
-                string.Equals(expectedClassification, found, StringComparison.InvariantCultureIgnoreCase),
+                string.Equals(
+                    expectedClassification,
+                    found.Outcome,
+                    StringComparison.InvariantCultureIgnoreCase),
                 $"Expected '{queryString}' to result in '{expectedClassification}', but got '{found}'");
         }
 
@@ -358,6 +371,31 @@ no  rain     mild high   strong";
             Assert.AreEqual(fullyTyped.Values.First(), knownType.Values.First());
 
             Assert.AreEqual(TestMemberClassification.Values.First(), knownType.Values.First());
+        }
+
+        [TestMethod]
+        public void TestDecisionResults()
+        {
+            DateTime now = DateTime.UtcNow;
+            DateTime later = now.AddMinutes(15);
+
+            DecisionResult yes = new("Yes", now);
+            DecisionResult yesAgain = new("Yes", now);
+
+            Assert.AreEqual(yes.Outcome, yesAgain.Outcome);
+            Assert.IsTrue(yes.IsValid);
+
+            DecisionResult copyOfYes = yes;
+
+            Assert.AreEqual(yes, copyOfYes);
+
+            DecisionResult yesButLater = new(yes.Outcome, later);
+
+            Assert.AreNotEqual(yes, yesButLater);
+
+            DecisionResult nope = new("Nope", now);
+
+            Assert.AreNotEqual(yes, nope);
         }
 
         private static readonly string[] TestOutcomeNames = { "Yes", "No", "Maybe" };

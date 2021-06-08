@@ -366,7 +366,7 @@ namespace AiEngine.DecisionTree
         protected List<int> ExampleIds = new(); // A list of examples that this subtree needs to classify
         protected DecisionTree DecisionTree; // Pointer to the root node of the decision tree that owns the node
 
-        public Dictionary<AttributeValueId, DecisionNode> Children { get; }
+        public Dictionary<AttributeValueId, DecisionNode> Children { get; init; }
 
         protected Dictionary<AttributeId, float> InformationGain = new(); // Store the information gain for each attribute
         public AttributeId AttributeId { get; private set; } // The attribute this node splits on

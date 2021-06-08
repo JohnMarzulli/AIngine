@@ -22,7 +22,7 @@ namespace AiEngine.LearningBase
         ///	classification calculated is not placed
         ///	into the query object.
         /// </remarks>
-        public abstract string Classify(ClassificationData inQuery);
+        public abstract DecisionResult Classify(ClassificationData inQuery);
 
         /// <summary>
         /// Loads the training data used to classify queries.
