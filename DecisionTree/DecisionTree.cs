@@ -23,7 +23,7 @@ namespace AiEngine.DecisionTree
         /// <remarks>Data is given as an example object, but the classification
         /// calculated is not placed into the query object.</remarks>
         /// <returns>The resulting classification/outcome of the query.</returns>
-        public override string Classify(
+        public override DecisionResult Classify(
             ClassificationData inQuery
         )
         {
@@ -46,7 +46,7 @@ namespace AiEngine.DecisionTree
                 nodeToInspect = nodeToInspect.Children[valueId];
             }
 
-            return outClassification;
+            return new DecisionResult(outClassification);
         }
 
         /// <summary>

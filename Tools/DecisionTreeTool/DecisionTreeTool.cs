@@ -78,9 +78,9 @@ public class DecisionTreeTool
             foreach (Example example in testTree.Examples)
             {
                 string correctAnswer = testTree.GetClass(example.ClassIdentifier);
-                string calculatedAnswer = testTree.Classify(example);
+                DecisionResult calculatedAnswer = testTree.Classify(example);
 
-                bool isExampleMathWithClassification = correctAnswer == calculatedAnswer;
+                bool isExampleMathWithClassification = correctAnswer == calculatedAnswer.Outcome;
                 successCount += isExampleMathWithClassification ? 1 : 0;
                 failedCount += isExampleMathWithClassification ? 0 : 1;
 
