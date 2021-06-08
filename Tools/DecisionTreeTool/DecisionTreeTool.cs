@@ -28,17 +28,6 @@ public class DecisionTreeTool
             }
         }
 
-        /*
-        // Both will not compile.
-        public void SetOutcome(
-            string whatAreYouDoing
-        )
-        {
-            Outcome = whatAreYouDoing;
-            NoSetter = "And here";
-        }
-        */
-
         public Decision(
             string outcome
         )
